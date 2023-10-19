@@ -6,6 +6,67 @@ This project serves as a hands-on practice for Docker and Kubernetes. While the 
 
 
 ## TODO
-- [ ] refactor server, worker, and client deployment with [kustomize](https://github.com/kubernetes-sigs/kustomize)
+- [x] refactor server, worker, and client deployment with [kustomize](https://github.com/kubernetes-sigs/kustomize)
+- [ ] generate secret and config from env [ref](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
 - [ ] use [helm](https://helm.sh/docs/) for postgres and redis
 - [ ] write github actions for the deployment
+
+
+## Prerequisite
+- docker
+- kubernetes (can use docker desktop)
+- [helm](https://helm.sh/docs/)
+- [kustomize](https://github.com/kubernetes-sigs/kustomize)
+
+## Development
+
+1. install [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start) using helm
+
+2. create `postgres-secret.yaml` and replace  POSTGRES_PASSWORD with your password encoded in base64.
+```yaml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: postgres-secret
+  data:
+    POSTGRES_PASSWORD: <POSTGRES_PASSWORD>
+```
+
+then apply change to cluster
+```sh
+kubectl apply -f postgres-secret.yaml
+```
+
+3. create `server-secret.yaml` and replace  POSTGRES_PASSWORD with previous password encoded in base64.
+
+```yaml
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: server-secret
+  data:
+    PGPASSWORD:  <POSTGRES_PASSWORD>
+```
+
+then apply change to cluster
+```sh
+kubectl apply -f server-secret.yaml
+```
+
+
+4. deploy server
+
+```sh
+kubectl apply -k k8s/server
+```
+
+5. deploy worker
+```sh
+kubectl apply -k k8s/worker
+```
+
+6. deploy client
+
+```sh
+kubectl apply -k k8s/client
+```
