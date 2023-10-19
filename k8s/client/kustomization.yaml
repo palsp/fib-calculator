@@ -7,3 +7,6 @@ commonLabels:
 resources:
 - deployment.yaml
 - service.yaml
+images:
+- name: palsp/multi-client
+  newTag: 664db850c15f76259d123e11019d0addad70cb06
