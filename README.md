@@ -53,20 +53,27 @@ then apply change to cluster
 kubectl apply -f server-secret.yaml
 ```
 
+4. deploy postgres, redis and ingress
+```sh
+kubectl apply -f k8s
+```
 
-4. deploy server
+5. deploy server
 
 ```sh
 kubectl apply -k k8s/server
 ```
 
-5. deploy worker
+6. deploy worker
 ```sh
 kubectl apply -k k8s/worker
 ```
 
-6. deploy client
+7. deploy client
 
 ```sh
 kubectl apply -k k8s/client
 ```
+
+8. visit http://localhost:80
+
